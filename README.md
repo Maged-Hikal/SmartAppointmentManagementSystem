@@ -289,9 +289,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 *Full Stack .NET Developer*  
 *Specializing in modern web applications with .NET, Blazor, and cloud technologies*
 
-📧 **Email**: your.email@example.com  
-🔗 **LinkedIn**: [linkedin.com/in/magedhikal](https://linkedin.com/in/magedhikal)  
-🐙 **GitHub**: [github.com/magedhikal](https://github.com/magedhikal)
+📧 **Email**: maged.hikal@yahoo.com  
+🔗 **LinkedIn**: [linkedin.com/in/maged-hikal](https://www.linkedin.com/in/maged-hikal)
+🐙 **GitHub**: [github.com/Maged-Hikal](https://[github.com/Maged-Hikal](https://github.com/Maged-Hikal))
 
 ## 🙏 Acknowledgments
 
