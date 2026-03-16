@@ -1,4 +1,4 @@
-# Smart Appointment System 📅
+# Smart Appointment Management ٍSystem 📅
 
 A modern, scalable appointment management system built with .NET 8, Blazor WebAssembly, and Entity Framework Core, enhanced with AI-powered intelligent automation. This system provides comprehensive appointment scheduling capabilities with role-based access control, real-time updates, smart recommendations, and a responsive web interface.
 
@@ -73,14 +73,14 @@ SmartAppointmentSystem/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/SmartAppointmentSystem.git
-   cd SmartAppointmentSystem
+   git clone https://github.com/Maged-Hikal/SmartAppointmentManagementSystem.git
+   cd SmartAppointmentManagementSystem
    ```
 
 2. **Configure User Secrets**
    ```bash
    cd SmartAppointment.API
-   dotnet user-secrets set "Jwt:Key" "your-32-character-secret-key-here"
+   dotnet user-secrets set "Jwt:Key" "Generate-your-32-character-secret-key-here"
    dotnet user-secrets set "Jwt:Issuer" "your-issuer"
    dotnet user-secrets set "Jwt:Audience" "your-audience"
    ```
