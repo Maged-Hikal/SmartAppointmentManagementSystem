@@ -14,5 +14,6 @@ namespace SmartAppointment.Application.DTOs
         [RegularExpression(@"^\d{12}$", ErrorMessage = "SSN must be exactly 12 digits.")]
         [StringLength(12, MinimumLength = 12)]
         public string? SSN { get; set; }
+        public string CreatedAt { get; set; } = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
     }
 }

@@ -25,8 +25,8 @@ namespace SmartAppointment.Tests.Services
             // Arrange
             var appointments = new List<Appointment>
             {
-                new Appointment(DateTime.UtcNow.AddDays(1), "John Doe", "user1", "john@example.com", "+1234567890", "123456789012"),
-                new Appointment(DateTime.UtcNow.AddDays(2), "Jane Smith", "user2", "jane@example.com", "+0987654321", "987654321098")
+                new Appointment(DateTime.UtcNow.AddDays(1), "John Doe", "user1", "john@example.com", "+1234567890", "123456789012", createdAt : "2025-01-01"),
+                new Appointment(DateTime.UtcNow.AddDays(2), "Jane Smith", "user2", "jane@example.com", "+0987654321", "987654321098", createdAt : "2025-01-01")
             };
 
             _repositoryMock.Setup(r => r.GetAllAsync()).ReturnsAsync(appointments);
@@ -48,8 +48,8 @@ namespace SmartAppointment.Tests.Services
             var userId = "user123";
             var appointments = new List<Appointment>
             {
-                new Appointment(DateTime.UtcNow.AddDays(1), "John Doe", userId, "john@example.com", "+1234567890", "123456789012"),
-                new Appointment(DateTime.UtcNow.AddDays(2), "John Doe", userId, "john@example.com", "+1234567891", "123456789013")
+                new Appointment(DateTime.UtcNow.AddDays(1), "John Doe", userId, "john@example.com", "+1234567890", "123456789012", createdAt : "2025-01-01"),
+                new Appointment(DateTime.UtcNow.AddDays(2), "John Doe", userId, "john@example.com", "+1234567891", "123456789013", createdAt : "2025-01-01")
             };
 
             _repositoryMock.Setup(r => r.GetAllByUserAsync(userId)).ReturnsAsync(appointments);
@@ -97,7 +97,7 @@ namespace SmartAppointment.Tests.Services
         {
             // Arrange
             var appointmentId = Guid.NewGuid();
-            var appointment = new Appointment(DateTime.UtcNow.AddDays(1), "Test User", "user123", "test@example.com", "+1234567890", "123456789012");
+            var appointment = new Appointment(DateTime.UtcNow.AddDays(1), "Test User", "user123", "test@example.com", "+1234567890", "123456789012", createdAt: "2025-01-01");
 
             _repositoryMock.Setup(r => r.GetByIdAsync(appointmentId)).ReturnsAsync(appointment);
 
@@ -126,7 +126,7 @@ namespace SmartAppointment.Tests.Services
         {
             // Arrange
             var appointmentId = Guid.NewGuid();
-            var appointment = new Appointment(DateTime.UtcNow.AddDays(1), "Test User", "user123", "test@example.com", "+1234567890", "123456789012");
+            var appointment = new Appointment(DateTime.UtcNow.AddDays(1), "Test User", "user123", "test@example.com", "+1234567890", "123456789012", createdAt: "2025-01-01");
 
             _repositoryMock.Setup(r => r.GetByIdAsync(appointmentId)).ReturnsAsync(appointment);
 
@@ -156,7 +156,7 @@ namespace SmartAppointment.Tests.Services
             // Arrange
             var appointmentId = Guid.NewGuid();
             var newDate = DateTime.UtcNow.AddDays(7);
-            var appointment = new Appointment(DateTime.UtcNow.AddDays(1), "Test User", "user123", "test@example.com", "+1234567890", "123456789012");
+            var appointment = new Appointment(DateTime.UtcNow.AddDays(1), "Test User", "user123", "test@example.com", "+1234567890", "123456789012", createdAt: "2025-01-01");
 
             _repositoryMock.Setup(r => r.GetByIdAsync(appointmentId)).ReturnsAsync(appointment);
 
@@ -187,7 +187,7 @@ namespace SmartAppointment.Tests.Services
         {
             // Arrange
             var appointmentId = Guid.NewGuid();
-            var appointment = new Appointment(DateTime.UtcNow.AddDays(1), "Test User", "user123", "test@example.com", "+1234567890", "123456789012");
+            var appointment = new Appointment(DateTime.UtcNow.AddDays(1), "Test User", "user123", "test@example.com", "+1234567890", "123456789012", createdAt: "2025-01-01");
 
             _repositoryMock.Setup(r => r.GetByIdAsync(appointmentId)).ReturnsAsync(appointment);
 

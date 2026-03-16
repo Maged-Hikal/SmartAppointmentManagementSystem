@@ -121,7 +121,7 @@ namespace SmartAppointment.API.Controllers.Admin
             var result = await _userManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
-            await _userManager.AddToRoleAsync(user, dto.Role);
+            //await _userManager.AddToRoleAsync(user, dto.Role);
             await _userManager.AddToRoleAsync(user, "User");
 
             return CreatedAtAction(nameof(GetUsersWithRoles), new { id = user.Id }, new { user.Id, user.UserName, user.Email, user.PhoneNumber, user.SSN });

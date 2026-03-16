@@ -63,6 +63,7 @@
                         <tr>
                             <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Customer</th>
                             <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Date & Time</th>
+                            <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Created At</th>
                             <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Contact</th>
                             <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
                             <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
@@ -79,6 +80,10 @@
                                 <td class="px-6 py-4">
                                     <div class="text-sm text-gray-700 font-semibold">@a.Date.ToString("MMM dd, yyyy")</div>
                                     <div class="text-xs text-blue-600 font-medium">@a.Date.ToString("hh:mm tt")</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-700 font-semibold">@a.CreatedAt.ToString()</div>
+                                    <div class="text-xs text-blue-600 font-medium">@a.CreatedAt.ToString()</div>
                                 </td>
                                 <td class="px-6 py-4 text-sm">
                                     <div class="text-gray-600">@a.Email</div>

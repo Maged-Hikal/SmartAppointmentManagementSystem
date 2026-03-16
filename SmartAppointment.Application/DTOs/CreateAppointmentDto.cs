@@ -8,8 +8,8 @@ namespace SmartAppointment.Application.DTOs
         public DateTime Date { get; set; }
         [Required]
         [StringLength(100)]
-        public string? CustomerName { get; set; }
-        public string? UserId { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
         public string? Email { get; set; }
         [Required(ErrorMessage = "Phone number is required.")]
         [Phone(ErrorMessage = "Invalid phone number format.")]
@@ -18,5 +18,6 @@ namespace SmartAppointment.Application.DTOs
         [RegularExpression(@"^\d{12}$", ErrorMessage = "SSN must be exactly 12 digits.")]
         [StringLength(12, MinimumLength = 12)]
         public string? SSN { get; set; }
+        public string CreatedAt { get; set; } = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
     }
 }
