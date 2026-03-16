@@ -311,4 +311,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Projects ScreenShot
 Please check here :
 https://github.com/Maged-Hikal/SmartAppointmentManagementSystem/tree/master/docs/images
+## API Swagger
+Please check here: 
+https://github.com/Maged-Hikal/SmartAppointmentManagementSystem/tree/master/docs/images/Swagger
 
