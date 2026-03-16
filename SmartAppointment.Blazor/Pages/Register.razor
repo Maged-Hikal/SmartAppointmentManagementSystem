@@ -1,0 +1,73 @@
+﻿@page "/register"
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+<div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Create Account</h2>
+
+        <EditForm Model="_model" OnValidSubmit="HandleRegistration">
+            <DataAnnotationsValidator />
+
+            <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-700">Full Name</label>
+                <InputText @bind-Value="_model.UserName" class="@InputStyle" placeholder="John Doe" />
+                <ValidationMessage For="@(() => _model.UserName)" class="text-red-500 text-xs" />
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-700">Email Address <span class="text-gray-400 font-normal">(Optional)</span></label>
+                <InputText @bind-Value="_model.Email" class="@InputStyle" placeholder="name@example.com" />
+                <p class="text-[10px] text-gray-500 mt-1">Required later to confirm registration.</p>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-700">Phone Number <span class="text-gray-400 font-normal">(Optional)</span></label>
+                <InputText @bind-Value="_model.PhoneNumber" class="@InputStyle" placeholder="+46731234567" />
+                <p class="text-[10px] text-gray-500 mt-1">Required later to book appointments.</p>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-700">SSN</label>
+                <InputText @bind-Value="_model.SSN" class="@InputStyle" placeholder="199909099999" />
+                <ValidationMessage For="@(() => _model.SSN)" class="text-red-500 text-xs" />
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">Password</label>
+                <div class="relative">
+                    <InputText type="@(showPassword ? "text" : "password")" @bind-Value="_model.Password" class="@InputStyle" autocomplete="new-password" />
+                    <button type="button" @onclick="() => showPassword = !showPassword"
+                            class="absolute inset-y-0 right-3 flex items-center">
+                        <span class="@(showPassword ? "bi-eye-slash-fill-nav-menu" : "bi-eye-fill-nav-menu")"></span>
+                    </button>
+                </div>
+                <ValidationMessage For="@(() => _model.Password)" class="text-red-500 text-xs" />
+            </div>
+            @if (errors != null && errors.Any())
+            {
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <div>
+                        <ul class="mb-0">
+                            @foreach (var error in errors)
+                            {
+                                <li>@error</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition duration-200">
+                Sign Up
+            </button>
+        </EditForm>
+
+        <div class="mt-6 text-center text-sm text-gray-600">
+            Already have an account? <a href="/login" class="text-blue-600 hover:underline">Log in</a>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string InputStyle => "block w-full pl-4 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all";
+}

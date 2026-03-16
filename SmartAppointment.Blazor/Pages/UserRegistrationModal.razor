@@ -1,0 +1,57 @@
+﻿@using SmartAppointment.Blazor.Models.Admin
+@inject SmartAppointment.Blazor.Services.AdminApiService AdminApi
+@inject IJSRuntime JS
+
+@if (Visible)
+{
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-100 animate-in zoom-in duration-200">
+            <div class="bg-indigo-600 p-6">
+                <h3 class="text-xl font-bold text-white">@((IsEditing) ? "Update Credentials" : "Register New User")</h3>
+                <p class="text-indigo-100 text-sm mt-1">Please fill in all required system identifiers.</p>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase ml-1">Account ID</label>
+                    <input class="w-full border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-slate-50"
+                           placeholder="User Full Name" @bind="Model.UserName" />
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-500 uppercase ml-1">Email Address</label>
+                        <input class="w-full border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-slate-50 text-sm"
+                               placeholder="name@company.com" @bind="Model.Email" />
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-500 uppercase ml-1">Phone</label>
+                        <input class="w-full border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-slate-50 text-sm"
+                               placeholder="+1 555-000" @bind="Model.PhoneNumber" />
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase ml-1">SSN (Government ID)</label>
+                    <input class="w-full border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-slate-50 tracking-widest"
+                           maxlength="12" placeholder="000000000000" @bind="Model.SSN" />
+                </div>
+
+                @if (!IsEditing)
+                {
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-500 uppercase ml-1">Security Password</label>
+                        <input class="w-full border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-slate-50"
+                               placeholder="••••••••" type="password" @bind="Model.Password" />
+                    </div>
+                }
+
+                <div class="flex items-center gap-3 pt-4">
+                    <button class="flex-1 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition-colors" @onclick="Cancel">Discard</button>
+                    <button class="flex-1 px-4 py-3 rounded-xl font-bold bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-100 transition-transform active:scale-95" @onclick="SaveAsync">
+                        @(IsEditing ? "Save Changes" : "Confirm User")
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

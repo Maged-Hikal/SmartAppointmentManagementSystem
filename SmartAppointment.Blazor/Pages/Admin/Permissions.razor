@@ -1,0 +1,58 @@
+﻿@page "/admin/permissions"
+@inject HttpClient Http
+@inject NavigationManager NavManager
+
+<h3>Permissions</h3>
+
+<div class="row">
+    <div class="col-6">
+        <h5>All permissions</h5>
+        <table class="table">
+            <thead><tr><th>Name</th><th>Description</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var p in Permission)
+                {
+                    <tr>
+                        <td>@p.Name</td>
+                        <td>@p.Description</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" @onclick="() => Edit(p.Id)">Edit</button>
+                            <button class="btn btn-sm btn-danger" @onclick="() => Delete(p.Id)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h5>Create</h5>
+        <input class="form-control mb-1" placeholder="Permission name" @bind="NewPermissionName" />
+        <input class="form-control mb-1" placeholder="Description" @bind="NewPermissionDescription" />
+        <button class="btn btn-success" @onclick="CreatePermission">Create</button>
+    </div>
+
+    <div class="col-6">
+        <h5>Roles & assignments</h5>
+        <select class="form-select mb-2" @onchange="OnRoleChanged">
+            <option value="">-- Select role --</option>
+            @foreach (var r in Roles)
+            {
+                <option value="@r.Id">@r.Name</option>
+            }
+        </select>
+
+        @if (SelectedRole != null)
+        {
+            <h6>Permissions for: @SelectedRole.Name</h6>
+            <div>
+                @foreach (var p in Permission)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" @bind="@p.AssignedToSelectedRole" />
+                        <label class="form-check-label">@p.Name</label>
+                    </div>
+                }
+            </div>
+            <button class="btn btn-primary mt-2" @onclick="SaveRolePermissions">Save Assignments</button>
+        }
+    </div>
+</div>

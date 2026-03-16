@@ -1,0 +1,4 @@
+Add-Migration AddPermissionEntities -Context AppDbContext -Project SmartAppointment.Infrastructure -StartupProject SmartAppointment.API
+
+
+Update-Database -Context AppDbContext -Project SmartAppointment.Infrastructure -StartupProject SmartAppointment.API

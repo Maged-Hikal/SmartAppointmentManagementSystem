@@ -1,0 +1,144 @@
+﻿@page "/d/s"
+@using SmartAppointment.Blazor.Pages.Admin
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SuperAdmin")]
+@inject SmartAppointment.Blazor.Services.AdminApiService AdminApi
+@inject IJSRuntime JS
+@inherits SuperAdminDashboardBase
+
+<div class="bg-darkbg text-gray-200 min-h-screen p-6">
+
+    <!-- TOP BAR -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-white">Admin Control Center</h1>
+            <p class="text-gray-400 text-sm">System governance & access</p>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+
+        <div class="bg-card p-5 rounded-2xl shadow">
+            <p class="text-gray-400 text-sm">Users</p>
+            <h2 class="text-3xl font-bold">@Stats.TotalUsers</h2>
+        </div>
+
+        <div class="bg-card p-5 rounded-2xl shadow">
+            <p class="text-gray-400 text-sm">Roles</p>
+            <h2 class="text-3xl font-bold">@Stats.TotalRoles</h2>
+        </div>
+
+        <div class="bg-card p-5 rounded-2xl shadow">
+            <p class="text-gray-400 text-sm">Total Approved Appointments</p>
+            <h2 class="text-3xl font-bold">@AppointmentStats.TotalApproved</h2>
+        </div>
+        <div class="bg-card p-5 rounded-2xl shadow">
+            <p class="text-gray-400 text-sm">Total Pending Appointments</p>
+            <h2 class="text-3xl font-bold">@AppointmentStats.TotalPending</h2>
+        </div>
+        <div class="bg-card p-5 rounded-2xl shadow">
+            <p class="text-gray-400 text-sm">Permissions</p>
+            <h2 class="text-3xl font-bold">@Stats.TotalPermissions</h2>
+        </div>
+
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="grid lg:grid-cols-2 gap-6">
+
+        <!-- PERMISSION TABLE -->
+        <div class="bg-card rounded-2xl shadow p-6">
+
+            <h3 class="text-xl font-semibold mb-4">Permission Management</h3>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="text-gray-400 border-b border-gray-700">
+                        <tr>
+                            <th class="text-left py-3">Name</th>
+                            <th class="text-left py-3">Description</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Permissions != null)
+                        {
+                            @foreach (var p in Permissions)
+                            {
+                                <tr class="border-b border-gray-800">
+                                    <td class="py-3 font-semibold">@p.Name</td>
+                                    <td class="text-gray-400">@p.Description</td>
+                                    <td class="text-right">
+                                        <button class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg text-sm"
+                                                @onclick="() => DeletePermission(p.Id)">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- CREATE -->
+            <div class="grid md:grid-cols-3 gap-3 mt-5">
+                <input class="bg-gray-900 border border-gray-700 rounded-lg px-3 py-2"
+                       placeholder="Permission name"
+                       @bind="NewPermissionName" />
+
+                <input class="bg-gray-900 border border-gray-700 rounded-lg px-3 py-2"
+                       placeholder="Description"
+                       @bind="NewPermissionDescription" />
+
+                <button class="bg-green-600 hover:bg-green-700 rounded-lg"
+                        @onclick="CreatePermission">
+                    Create
+                </button>
+            </div>
+
+        </div>
+
+        <!-- ROLE PERMISSIONS -->
+        <div class="bg-card rounded-2xl shadow p-6">
+
+            <h3 class="text-xl font-semibold mb-4">Role Access Control</h3>
+
+            <select class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 mb-4"
+                    @onchange="OnRoleSelected">
+                <option value="">Select role...</option>
+                @if (Roles != null)
+                {
+                    @foreach (var r in Roles)
+                    {
+                        <option value="@r.Id">@r.Name</option>
+                    }
+                }
+            </select>
+
+            @if (SelectedRole != null)
+            {
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    @foreach (var p in Permissions)
+                    {
+                        <label class="flex items-center gap-2 bg-gray-900 p-2 rounded-lg">
+                            <input type="checkbox" @bind="@p.AssignedToSelectedRole" />
+                            <span>@p.Name</span>
+                        </label>
+                    }
+                </div>
+
+                <button class="mt-5 bg-primary hover:bg-indigo-500 px-5 py-2 rounded-xl"
+                        @onclick="SaveRolePermissions">
+                    Save Changes
+                </button>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
+

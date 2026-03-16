@@ -1,0 +1,6 @@
+@SmartAppointment.API_HostAddress = http://localhost:5090
+
+GET {{SmartAppointment.API_HostAddress}}
+Accept: application/json
+
+###

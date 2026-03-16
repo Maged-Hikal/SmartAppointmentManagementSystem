@@ -1,0 +1,190 @@
+﻿@page "/u/s"
+@using SmartAppointment.Blazor.Models.Admin
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "SuperAdmin")]
+@inject SmartAppointment.Blazor.Services.AdminApiService AdminApi
+@inject IJSRuntime JS
+@inherits SuperAdminDashboardBase
+
+<div class="p-6 max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">User Management</h2>
+            <p class="text-slate-500 mt-1">Manage system access, roles, and security credentials.</p>
+        </div>
+        <button class="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl transition-all shadow-lg shadow-indigo-200 active:scale-95 group"
+                @onclick="ShowCreate">
+            <span class="bi-plus-square-nav-menu transition-transform group-hover:scale-110" aria-hidden="true"></span>
+            <span class="font-bold">Add New User</span>
+        </button>
+    </div>
+    <div class="flex flex-col md:flex-row gap-4 mb-6">
+        <div class="relative flex-1">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                <i class="bi bi-search"></i>
+            </span>
+            <input type="text"
+                   class="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all shadow-sm"
+                   placeholder="Search by name, email or SSN..."
+                   @bind="SearchTerm" @bind:event="oninput" />
+        </div>
+
+        <div class="w-full md:w-48">
+            <select class="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm cursor-pointer"
+                    @bind="FilterRole">
+                <option value="All">All Roles</option>
+                <option value="Admin">Admins</option>
+                <option value="User">Users</option>
+            </select>
+        </div>
+    </div>
+   
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-100 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50/80 border-b border-slate-100">
+                        <th class="px-6 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest">User Profile</th>
+                        <th class="px-6 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest">Contact Information</th>
+                        <th class="px-6 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest">Security (SSN)</th>
+                        <th class="px-6 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest text-right">Management</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                    @if (Users == null)
+                    {
+                        <tr>
+                            <td colspan="4" class="p-12 text-center">
+                                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent"></div>
+                                <p class="mt-4 text-slate-500 font-medium">Synchronizing database...</p>
+                            </td>
+                        </tr>
+                    }
+                    else if (!Users.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="p-12 text-center text-slate-400">
+                                <div class="text-4xl mb-2">📁</div>
+                                <p>No users found in the system records.</p>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var user in FilteredUsers)
+                        {
+                            <tr class="hover:bg-indigo-50/30 transition-colors group">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-4">
+                                        <div class="h-12 w-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-md shadow-indigo-100">
+                                            <span class="text-sm font-black">@(string.IsNullOrEmpty(user.UserName) ? "?" : user.UserName.Substring(0, 1).ToUpper())</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-slate-900">@user.UserName</div>
+                                            @if (user.Roles != null && user.Roles.Any())
+                                            {
+                                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-bold uppercase">
+                                                    @user.Roles.First()
+                                                </span>
+                                            }
+                                            <div class="text-xs font-medium text-indigo-600">Active Account</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-semibold text-slate-700">@user.Email</span>
+                                        <span class="text-xs text-slate-400">@user.PhoneNumber</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="font-mono text-xs font-bold tracking-tighter text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+                                        @((user.SSN?.Length >= 4) ? $"••• ••• {user.SSN.Substring(user.SSN.Length - 4)}" : user.SSN)
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex justify-end gap-3">
+                                        <button class="p-2.5 text-slate-700 bg-slate-100 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all active:scale-90 border border-slate-200 shadow-sm"
+                                                title="Edit Settings" @onclick="() => ShowEdit(user)" aria-label="Edit User">Edit
+                                            <span class="bi-gear-nav-menu" aria-hidden="true" style="filter: none;"></span>
+                                        </button>
+                                        <button class="p-2.5 text-slate-700 bg-slate-100 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all active:scale-90 border border-slate-200 shadow-sm"
+                                                title="Terminate Access" @onclick="() => DeleteUserAsync(user)" aria-label="Delete User">Delete
+                                            <span class="bi-x-lg-menu" aria-hidden="true" style="filter: none;"></span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@if (IsModalOpen)
+{
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-100 animate-in zoom-in duration-200">
+            <div class="bg-indigo-600 p-6">
+                <h3 class="text-xl font-bold text-white">@((IsEditing) ? "Update Credentials" : "Register New User")</h3>
+                <p class="text-indigo-100 text-sm mt-1">Please fill in all required system identifiers.</p>
+            </div>
+
+            <div class="p-6 space-y-4">
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase ml-1">Account ID</label>
+                    <input class="w-full border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-slate-50"
+                           placeholder="johndoe_99" @bind="EditModel.UserName" />
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-500 uppercase ml-1">Email Address</label>
+                        <input class="w-full border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-slate-50 text-sm"
+                               placeholder="name@company.com" @bind="EditModel.Email" />
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-500 uppercase ml-1">Phone</label>
+                        <input class="w-full border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-slate-50 text-sm"
+                               placeholder="+1 555-000" @bind="EditModel.PhoneNumber" />
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-500 uppercase ml-1">SSN (Government ID)</label>
+                    <input class="w-full border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-slate-50 tracking-widest"
+                           maxlength="12" placeholder="000000000000" @bind="EditModel.SSN" />
+                </div>
+
+                @if (!IsEditing)
+                {
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-500 uppercase ml-1">System Access Role</label>
+                        <select class="w-full border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-slate-50 text-sm cursor-pointer"
+                                @bind="EditModel.Role">
+                            <option value="User">Standard User</option>
+                            <option value="Admin">Administrator</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-500 uppercase ml-1">Security Password</label>
+                        <input class="w-full border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-slate-50"
+                               placeholder="••••••••" type="password" @bind="EditModel.Password" />
+                    </div>
+                }
+
+                <div class="flex items-center gap-3 pt-4">
+                    <button class="flex-1 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition-colors" @onclick="CloseModal">Discard</button>
+                    <button class="flex-1 px-4 py-3 rounded-xl font-bold bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-100 transition-transform active:scale-95" @onclick="SaveUserAsync">
+                        @(IsEditing ? "Save Changes" : "Confirm User")
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+   
+}

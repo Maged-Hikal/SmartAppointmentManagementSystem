@@ -1,0 +1,76 @@
+﻿@page "/login"
+@using Microsoft.AspNetCore.Components.Authorization
+@using SmartAppointment.Blazor.Auth
+@using SmartAppointment.Blazor.Models
+@using SmartAppointment.Blazor.Services
+@inject AppointmentApiService Api
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+
+<PageTitle>Login</PageTitle>
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-lg border-0 rounded-4 p-4">
+            <div class="card-body">
+
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold text-primary">Smart Appointment</h2>
+                    <p class="text-muted">Sign in to your account</p>
+                </div>
+
+                <EditForm Model="_model" OnValidSubmit="HandleLogin">
+                    <DataAnnotationsValidator />
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Email or Username</label>
+                        <InputText class="form-control form-control-lg"
+                                   placeholder="Enter your email or full name"
+                                   @bind-Value="_model.Identifier" />
+                        <ValidationMessage For="@(() => _model.Identifier)" />
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Password</label>
+                        <InputText type="password" class="form-control form-control-lg" placeholder="Enter your password" @bind-Value="_model.Password" />
+                    </div>
+
+                    <!-- Error -->
+                    @if (_error != null)
+                    {
+                        <div class="alert alert-danger mt-3">@_error</div>
+                    }
+
+                    <!-- Button -->
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-3">
+                            Login
+                        </button>
+                    </div>
+                </EditForm>
+
+                <!-- Extra links -->
+                <div class="text-center mt-4">
+                    <a href="/register" class="text-decoration-none">Create new account</a>
+                </div>
+
+                <div class="text-center mt-2">
+                    <a href="/forgot-password" class="text-muted small text-decoration-none">
+                        Forgot password?
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-4 text-muted small">
+            Smart Appointment System © @DateTime.Now.Year
+        </div>
+    </div>
+
+</div>

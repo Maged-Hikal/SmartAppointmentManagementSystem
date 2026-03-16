@@ -1,0 +1,31 @@
+﻿@page "/dashboard"
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            if (user.IsInRole("Admin"))
+            {
+                Navigation.NavigateTo("/d/a");
+            }
+            else if (user.IsInRole("SuperAdmin"))
+            {
+                Navigation.NavigateTo("/d/s");
+            }
+            else
+            {
+                Navigation.NavigateTo("/d/u");
+            }
+        }
+        else
+        {
+            Navigation.NavigateTo("login");
+        }
+    }
+}

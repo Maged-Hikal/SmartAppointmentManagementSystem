@@ -1,0 +1,54 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<div class="container mt-5">
+
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold text-primary">Welcome to Smart Appointment System</h1>
+        <p class="lead text-muted mt-3">
+            Manage your appointments easily, securely, and intelligently.
+        </p>
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-4 p-4">
+        <div class="card-body text-center">
+
+            <h4 class="mb-3">Start managing your schedule today</h4>
+
+            <p class="text-muted">
+                Please log in to view your appointments, create new bookings, and access your personalized dashboard.
+                You can also explore our smart AI assistant to help you manage your time more efficiently.
+            </p>
+
+            <div class="mt-4">
+                <a href="/login" class="btn btn-primary btn-lg px-4">Login</a>
+                <a href="/register" class="btn btn-outline-secondary btn-lg px-4 ms-2">Create Account</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5 text-center">
+        <div class="col-md-6">
+            <div class="p-4 border rounded-4 shadow-sm h-100">
+                <h5 class="text-primary">Need Help?</h5>
+                <p class="text-muted">
+                    If you have any questions or need human support, feel free to contact us anytime.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="p-4 border rounded-4 shadow-sm h-100">
+                <h5 class="text-primary">Contact Information</h5>
+                <p class="mb-1"><strong>Phone:</strong> +46 730 000 000</p>
+                <p class="mb-0"><strong>Email:</strong> info@smartappointment.com</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-5 text-muted small">
+        © @DateTime.Now.Year Smart Appointment System — All rights reserved
+    </div>
+
+</div>

@@ -1,0 +1,70 @@
+﻿@inherits LayoutComponentBase
+@using SmartAppointment.Blazor.Auth
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavigationManager
+
+<div class="h-screen flex overflow-hidden bg-gray-100">
+
+    <!-- Mobile Overlay -->
+    @if (sidebarOpen)
+    {
+        <div class="fixed inset-0 bg-black/40 z-40 md:hidden"
+             @onclick="ToggleSidebar">
+        </div>
+    }
+
+    <!-- Sidebar -->
+    <aside class="@SidebarClass">
+        <NavMenu />
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+        <!-- Topbar -->
+        <header class="w-full h-16 bg-white border-b flex items-center justify-between px-4 shadow-sm">
+
+            <div class="flex items-center gap-3">
+                <button class="md:hidden p-2 rounded hover:bg-gray-100 flex items-center justify-center" @onclick="ToggleSidebar">
+                    <span class="bi-list-mobile-menu" aria-hidden="true"></span>
+                </button>
+                <h1 class="font-semibold text-gray-800 whitespace-nowrap">
+                    Smart Appointment
+                </h1>
+            </div>
+            <div class="flex items-center gap-6 text-sm font-medium">
+                <AuthorizeView>
+                    <Authorized>
+                        <div class="flex flex-col items-end mr-2">
+                            <span class="text-gray-500 font-bold leading-none">
+                                @context.User.Identity?.Name
+                            </span>
+                            <span class="text-gray-900 text-sm mt-1">
+                                Logged in as: @(context.User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "User")
+                            </span>
+                        </div>
+                        <button class="btn btn-danger font-semibold" @onclick="LogoutAsync" @onclick:preventDefault>
+                            Logout
+                        </button>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
+        </header>
+        <!-- Page Content -->
+        <main class="flex-1 overflow-auto p-4">
+            @Body
+        </main>
+    </div>
+</div>
+
+@code {
+    private bool sidebarOpen;
+
+    private void ToggleSidebar()
+        => sidebarOpen = !sidebarOpen;
+
+    private string SidebarClass =>
+        sidebarOpen
+        ? "fixed z-50 left-0 top-0 h-screen w-64 bg-slate-900 text-white transform transition-transform duration-300 md:static md:translate-x-0"
+        : "fixed z-50 left-0 top-0 h-screen w-64 bg-slate-900 text-white -translate-x-full transition-transform duration-300 md:static md:translate-x-0";
+}

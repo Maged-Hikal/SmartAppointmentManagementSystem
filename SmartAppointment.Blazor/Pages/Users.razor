@@ -1,0 +1,31 @@
+﻿@page "/a/users"
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            if (user.IsInRole("SuperAdmin"))
+            {
+                Navigation.NavigateTo("/u/s");
+            }
+            else if (user.IsInRole("Admin"))
+            {
+                Navigation.NavigateTo("/u/a");
+            }
+            else
+            {
+                Navigation.NavigateTo("/dashboard");
+            }
+        }
+        else
+        {
+            Navigation.NavigateTo("/login");
+        }
+    }
+}

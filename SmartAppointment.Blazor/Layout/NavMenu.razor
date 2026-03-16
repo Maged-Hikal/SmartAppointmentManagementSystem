@@ -1,0 +1,81 @@
+﻿@inject IJSRuntime JS
+
+<div class="h-full flex flex-col">
+
+    <!-- Logo -->
+    <div class="h-16 flex items-center px-6 border-b border-gray-800">
+        <span class="text-lg font-bold text-white">
+            SmartAppointment
+        </span>
+    </div>
+
+    <!-- Menu -->
+    <nav class="flex-1 p-3 space-y-1 text-gray-300">
+
+        <NavLink href="/" Match="NavLinkMatch.All" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-600 transition text-white" ActiveClass="bg-gray-800 text-white">
+            <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span>
+            <span class="ml-2">Home</span>
+        </NavLink>
+         <AuthorizeView Roles="User">
+            <Authorized>
+        <NavLink href="profile" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-600 transition text-white" ActiveClass="bg-gray-800 text-white">
+            <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span>
+            <span class="ml-2">My Profile</span>
+        </NavLink>
+            </Authorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="Admin, SuperAdmin">
+            <Authorized>
+                <NavLink href="dashboard" Match="NavLinkMatch.All" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-600 transition text-white" ActiveClass="bg-gray-800 text-white">
+                    <span class="bi bi-speedometer2-nav-menu" aria-hidden="true"></span>
+                    <span class="ml-2">Dashboard</span>
+                </NavLink>
+            </Authorized>
+        </AuthorizeView>
+
+        <NavLink href="appointments" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-600 transition text-white" ActiveClass="bg-gray-800 text-white">
+            <span class="bi bi-calendar-nav-menu" aria-hidden="true"></span>
+            <span class="ml-2">Appointments</span>
+        </NavLink>
+
+        <NavLink href="appointments/create" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-600 transition text-white" ActiveClass="bg-gray-800 text-white">
+            <span class="bi bi-plus-square-nav-menu" aria-hidden="true"></span>
+            <span class="ml-2">Create Appointment</span>
+        </NavLink>
+        <AuthorizeView Roles="Admin, SuperAdmin">
+         <Authorized>
+        <NavLink href="a/users" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-600 transition text-white" ActiveClass="bg-gray-800 text-white">
+            <span class="bi bi-people-nav-menu" aria-hidden="true"></span>
+            <span class="ml-2">Users</span>
+        </NavLink>
+        <NavLink href="admin/roles" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-600 transition text-white" ActiveClass="bg-gray-800 text-white">
+            <span class="bi bi-graph-up-nav-menu" aria-hidden="true"></span>
+            <span class="ml-2">Report</span>
+        </NavLink>
+        </Authorized>
+        </AuthorizeView>
+
+    </nav>
+
+    <!-- OVERLAY MOBILE -->
+    <div class="@OverlayCss fixed inset-0 bg-black/60 z-20 md:hidden"
+      @onclick="ToggleSidebar">
+  </div>
+</div>
+
+@code {
+    private bool sidebarOpen = false;
+
+    private string SidebarCss => sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0";
+
+    private string OverlayCss => sidebarOpen ? "block" : "hidden";
+
+    void ToggleSidebar()
+    {
+        sidebarOpen = !sidebarOpen;
+    }
+    async Task ToggleDark()
+    {
+        await JS.InvokeVoidAsync("toggleDarkMode");
+    }
+}
