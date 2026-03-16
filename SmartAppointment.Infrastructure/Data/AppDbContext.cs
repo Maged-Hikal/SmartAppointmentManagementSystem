@@ -26,6 +26,9 @@ namespace SmartAppointment.Infrastructure.Data
                 b.Property(a => a.UserId)
                  .HasColumnType("nvarchar(450)")
                  .IsRequired();
+                b.Property(a => a.CreatedAt)
+                 .HasColumnType("datetime2")
+                 .HasDefaultValueSql("GETUTCDATE()");
                 b.HasOne<ApplicationUser>()
                  .WithMany()
                  .HasForeignKey(a => a.UserId)

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -10,11 +11,12 @@ namespace SmartAppointment.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
+            migrationBuilder.AddColumn<DateTime>(
                 name: "CreatedAt",
                 table: "Appointments",
-                type: "nvarchar(max)",
-                nullable: true);
+                type: "datetime2",
+                nullable: false,
+                defaultValueSql: "GETUTCDATE()");
         }
 
         /// <inheritdoc />

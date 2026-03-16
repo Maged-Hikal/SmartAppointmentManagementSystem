@@ -9,7 +9,7 @@
         public string? Email { get; set; }
         public string? Status { get; set; }
         public string? SSN { get; set; }
-        public string? CreatedAt { get; set; } = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     }
 }

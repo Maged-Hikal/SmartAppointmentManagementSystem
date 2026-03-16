@@ -25,6 +25,7 @@ namespace SmartAppointment.Application.Services
                 SSN = a.SSN,
                 Status = a.Status.ToString(),
                 UserId = a.UserId,
+                CreatedAt = a.CreatedAt
             });
         }
         public async Task<IEnumerable<AppointmentDto>> GetByUserAsync(string userId)
@@ -41,11 +42,12 @@ namespace SmartAppointment.Application.Services
                 SSN = a.SSN,
                 Status = a.Status.ToString(),
                 UserId = a.UserId,
+                CreatedAt = a.CreatedAt
             });
         }
         public async Task CreateAsync(CreateAppointmentDto dto)
         {
-            var appointment = new Appointment(dto.Date, dto.CustomerName, dto.UserId, dto.Email, dto.PhoneNumber, dto.SSN, dto.CreatedAt);
+            var appointment = new Appointment(dto.Date, dto.CustomerName, dto.UserId, dto.Email, dto.PhoneNumber, dto.SSN);
             await _repository.AddAsync(appointment);
             await _repository.SaveChangesAsync();
         }

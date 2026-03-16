@@ -12,7 +12,7 @@ using SmartAppointment.Infrastructure.Data;
 namespace SmartAppointment.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260316120854_AddCreatedAt")]
+    [Migration("20260316132356_AddCreatedAt")]
     partial class AddCreatedAt
     {
         /// <inheritdoc />
@@ -164,8 +164,10 @@ namespace SmartAppointment.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedAt")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()

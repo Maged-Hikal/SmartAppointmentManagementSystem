@@ -13,10 +13,10 @@ namespace SmartAppointment.Domain.Entities
         public string? SSN { get; set; }
 
         public string? UserId { get; private set; }
-        public string? CreatedAt { get; set; } = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        public DateTime CreatedAt { get; private set; } = DateTime.Now;
 
         public Appointment() { }
-        public Appointment(DateTime date, string customerName, string userId, string? email, string? phoneNumber, string? SSn, string? createdAt)
+        public Appointment(DateTime date, string customerName, string userId, string? email, string? phoneNumber, string? SSn)
         {
             Id = Guid.NewGuid();
             Date = date;
@@ -26,7 +26,7 @@ namespace SmartAppointment.Domain.Entities
             Email = email;
             PhoneNumber = phoneNumber;
             SSN = SSn;
-            CreatedAt = createdAt;
+            CreatedAt = DateTime.Now;
         }
         public void AssignToUser(string userId) => UserId = userId;
         public void Approve()
