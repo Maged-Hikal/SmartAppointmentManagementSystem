@@ -1,4 +1,4 @@
-# Smart Appointment Management ٍSystem 📅
+# Smart Appointment Management System 📅
 
 A modern, scalable appointment management system built with .NET 8, Blazor WebAssembly, and Entity Framework Core, enhanced with AI-powered intelligent automation. This system provides comprehensive appointment scheduling capabilities with role-based access control, real-time updates, smart recommendations, and a responsive web interface.
 
